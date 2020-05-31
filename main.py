@@ -44,6 +44,9 @@ def find_intersection_dots(a: float, b: float, d: float) -> _Tuple[_Tuple[float,
             x, y = x_y(k)
             result.append((x, y))
 
+    result = set(result)
+    result = sorted(result)
+
     return tuple(result)
 
 
@@ -72,7 +75,19 @@ def find_intersection_dots_right(a: float, b: float, d: float) -> _Tuple[_Tuple[
     solution1 = _sympy.solve((eq1, eq2), (x, y))
     solution2 = _sympy.solve((eq1, eq3), (x, y))
 
-    return tuple((_x.evalf(), _y.evalf()) for (_x, _y) in solution1 + solution2)
+    result1 = [(_x.evalf(), _y.evalf()) for (_x, _y) in solution1
+               if type(_x.evalf()) != _sympy.core.add.Add and type(_y.evalf()) != _sympy.core.add.Add]
+    result1 = [(x, y) for (x, y) in result1 if x - d >= 0]
+
+    result2 = [(_x.evalf(), _y.evalf()) for (_x, _y) in solution2
+               if type(_x.evalf()) != _sympy.core.add.Add and type(_y.evalf()) != _sympy.core.add.Add]
+    result2 = [(x, y) for (x, y) in result2 if x - d < 0]
+
+    result = result1 + result2
+    result = set(result)
+    result = sorted(result)
+
+    return tuple(result)
 
 
 if __name__ == '__main__':
