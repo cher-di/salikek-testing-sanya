@@ -42,6 +42,13 @@ class TestFindIntersectionDots(unittest.TestCase):
                     (-6537, 4247, 6180)]
         self.template_test(examples)
 
+    def test_raises_type_error(self):
+        for i, coefficients in enumerate((('a', 1, 2), (15.0, (), -2), (-34.23, -12.56, set()))):
+            a, b, d = coefficients
+            with self.subTest(i=i, msg=f'a: {a}, b: {b}, d: {d}'):
+                with self.assertRaises(TypeError):
+                    find_intersection_dots(a, b, d)
+
 
 if __name__ == '__main__':
     unittest.main()
