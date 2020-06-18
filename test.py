@@ -8,12 +8,13 @@ DELTA = 10 ** -6
 
 
 class TestFindIntersectionDots(unittest.TestCase):
-    def template_test(self, examples: _Iterable[_Tuple[float, float, float]]):
+    def template_test(self, examples: _Iterable[_Tuple[float, float, float]], solutions_num: int):
         for i, (a, b, c, d) in enumerate(examples):
             with self.subTest(i=i, msg=f'a: {a}, b: {b}, c: {c}, d: {d}'):
                 result = find_intersection_dots(a, b, c, d)
                 right_result = find_intersection_dots_right(a, b, c, d)
                 self.assertEqual(len(result), len(right_result))
+                self.assertEqual(len(right_result), solutions_num)
                 for solution in zip(result, right_result):
                     first_pair, second_pair = solution
                     for value in zip(first_pair, second_pair):
@@ -21,9 +22,9 @@ class TestFindIntersectionDots(unittest.TestCase):
                         self.assertAlmostEqual(first, second, delta=DELTA)
 
     def test_no_solution(self):
-        examples = [(-100, -100, 0, 0), (-9, 0, 0, 0), (-8, 0, 0, 0), (-7, 0, 0, 0), (-6, 0, 0, 0), (-5, 0, 0, 0),
+        examples = [(-100, 0, 0, 0), (-9, 0, 0, 0), (-8, 0, 0, 0), (-7, 0, 0, 0), (-6, 0, 0, 0), (-5, 0, 0, 0),
                     (-4, 0, 0, 0), (-3, 0, 0, 0), (-2, 0, 0, 0), (-1, 0, 0, 0)]
-        self.template_test(examples)
+        self.template_test(examples, 0)
 
     def test_one_solution(self):
         examples = [(-5, -1, 0, 1), (-5, -1, 1, 0), (-5, -1, 2, -1), (-5, -1, 3, -2), (-5, -1, 4, -3), (-5, -1, 5, -4),
@@ -31,7 +32,7 @@ class TestFindIntersectionDots(unittest.TestCase):
                     (-4, -5, -1, 1), (-4, -5, 0, 0), (-4, -5, 1, -1), (-4, -5, 2, -2), (-4, -5, 3, -3), (-4, -5, 4, -4),
                     (-4, -5, 5, -5), (-4, -3, 0, 2), (-4, -3, 1, 3), (-4, -3, 2, 4), (-4, -3, 3, 5), (-4, -1, 0, 1),
                     (-4, -1, 1, 0), (-4, -1, 2, -1), (-4, -1, 3, -2), (-4, -1, 4, -3), (-4, -1, 5, -4), (-4, 0, 0, 1)]
-        self.template_test(examples)
+        self.template_test(examples, 1)
 
     def test_two_solutions(self):
         examples = [(-5, -5, 0, 1), (-5, -5, 0, 2), (-5, -5, 1, 0), (-5, -5, 1, 1), (-5, -5, 1, 2), (-5, -5, 1, 3),
@@ -39,7 +40,7 @@ class TestFindIntersectionDots(unittest.TestCase):
                     (-5, -5, 3, -2), (-5, -5, 3, -1), (-5, -5, 3, 0), (-5, -5, 3, 1), (-5, -5, 3, 2), (-5, -5, 3, 3),
                     (-5, -5, 3, 4), (-5, -5, 3, 5), (-5, -5, 4, -3), (-5, -5, 4, -2), (-5, -5, 4, -1), (-5, -5, 4, 0),
                     (-5, -5, 4, 1), (-5, -5, 4, 2), (-5, -5, 4, 3), (-5, -5, 4, 4), (-5, -5, 4, 5), (-5, -5, 5, -4)]
-        self.template_test(examples)
+        self.template_test(examples, 2)
 
     def test_three_solutions(self):
         examples = [(-2, 4, -1, 1), (-2, 4, 0, 2), (-2, 4, 1, 3), (-2, 4, 2, 4), (-2, 4, 3, 5), (-1, 2, 0, 1),
@@ -47,7 +48,7 @@ class TestFindIntersectionDots(unittest.TestCase):
                     (1, -2, 2, -1), (1, -2, 3, -2), (1, -2, 4, -3), (1, -2, 5, -4), (1, 0, 0, 1), (1, 2, 1, 2),
                     (1, 4, 4, 3), (2, -4, 2, 0), (2, -4, 3, -1), (2, -4, 4, -2), (2, -4, 5, -3), (2, 0, 0, 1),
                     (2, 4, 2, 2), (3, 0, 0, 1), (4, 0, 0, 1), (5, 0, 0, 1)]
-        self.template_test(examples)
+        self.template_test(examples, 3)
 
     def test_four_solutions(self):
         examples = [(-0.7, 1.0, -0.1, 0.3), (-0.7, 1.0, 0.0, 0.4),
@@ -56,7 +57,7 @@ class TestFindIntersectionDots(unittest.TestCase):
                     (-0.6, 0.7, 0.4, 0.6), (-0.6, 0.7, 0.5, 0.7), (-0.6, 0.7, 0.6, 0.8),
                     (-0.6, 0.7, 0.7, 0.9), (-0.6, 0.7, 0.8, 1.0), (-0.6, 0.8, 0.0, 0.3), (-0.6, 0.8, 0.1, 0.4),
                     (-0.6, 0.8, 0.2, 0.5), (-0.6, 0.8, 0.3, 0.6)]
-        self.template_test(examples)
+        self.template_test(examples, 4)
 
     def test_five_solutions(self):
         examples = [(0.1, -0.5, 0.5, 0.1), (0.1, -0.5, 0.8, 0.4), (0.1, -0.5, 0.9, 0.5), (0.1, -0.5, 1.0, 0.6),
@@ -67,7 +68,7 @@ class TestFindIntersectionDots(unittest.TestCase):
                     (0.1, -0.2, 0.5, 0.4), (0.1, -0.2, 0.6, 0.5), (0.1, -0.2, 0.7, 0.6), (0.1, -0.2, 0.8, 0.7),
                     (0.1, -0.2, 0.9, 0.8), (0.1, -0.2, 1.0, 0.9), (0.1, -0.1, 0.0, 1.0), (0.1, 0.0, 0.0, 1.0),
                     (0.1, 0.0, 0.3, 0.4), (0.1, 0.0, 0.5, 1.0)]
-        self.template_test(examples)
+        self.template_test(examples, 5)
 
     def test_six_solutions(self):
         examples = [(0.1, -0.7, 0.7, 0.2), (0.1, -0.7, 0.8, 0.3), (0.1, -0.7, 0.8, 0.4), (0.1, -0.6, 0.6, 0.2),
@@ -75,7 +76,7 @@ class TestFindIntersectionDots(unittest.TestCase):
                     (0.1, -0.6, 0.8, 0.5), (0.1, -0.5, 0.5, 0.2), (0.1, -0.5, 0.5, 0.3), (0.1, -0.5, 0.6, 0.3),
                     (0.1, -0.5, 0.6, 0.4), (0.1, -0.5, 0.6, 0.5), (0.1, -0.5, 0.6, 0.6), (0.1, -0.5, 0.6, 0.7),
                     (0.1, -0.5, 0.6, 0.8), (0.1, -0.5, 0.6, 0.9), (0.1, -0.5, 0.7, 0.4), (0.1, -0.5, 0.7, 0.5)]
-        self.template_test(examples)
+        self.template_test(examples, 6)
 
 
 if __name__ == '__main__':
